@@ -62,7 +62,7 @@ class Exercise7(ThoughtExperiment):
 
 class Exercise8(EqualityCheckProblem):
     _var = 'num_views'
-    _expected = 'You are very popular!'
+    _expected = 14
     _solution = CS(
 """if (num_views > 13):
     print('You are very popular!')
