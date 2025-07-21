@@ -78,17 +78,17 @@ class Exercise9(CodingProblem):
 class Exercise10(ThoughtExperiment):
     _hint = """
     for i in range(len(facebook_list)):
-    if (facebook_list[i] > linkedin_list[i]):
-        print('Facebook wins.')
-    else:
-        print('LinkedIn wins.')
+        if (facebook_list[i] > linkedin_list[i]):
+            print('Facebook wins.')
+        else:
+            print('LinkedIn wins.')
     """
     _solution = CS("""
     for i in range(len(facebook_list)):
-    if (facebook_list[i] > linkedin_list[i]):
-        print('Facebook wins.')
-    else:
-        print('LinkedIn wins.')
+        if (facebook_list[i] > linkedin_list[i]):
+            print('Facebook wins.')
+        else:
+            print('LinkedIn wins.')
     """)
 
 
