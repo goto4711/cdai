@@ -96,7 +96,7 @@ class Exercise11(CodingProblem):
     _var = 'min_freq'
     _hint = "min_freq = np.min(freq)"
     _solution = CS("min_freq = np.min(freq)")
-    def check(self, freq, min_freq):
+    def check(self, min_freq):
         assert min_freq == 0, f"\n💡 Hint: {self._hint}"
 
 
