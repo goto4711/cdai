@@ -68,14 +68,21 @@ class Exercise8(EqualityCheckProblem):
     print('You are very popular!')
 """)
 
-class Exercise9(CodingProblem):
+class Exercise9(ThoughtExperiment):
+    _hint = """print(for i in range(3):
+    print(i**2)"""
+    _solution = CS("""for i in range(3):
+    print(i**2)""")
+
+
+class Exercise10(CodingProblem):
     _vars = ['facebook', 'linkedin']
     _hint = "np.mean(facebook + linkedin)"
     _solution = CS("np.mean(facebook + linkedin)")
     def check(self, facebook, linkedin):
         assert (np.mean(facebook + linkedin) > 22) and (np.mean(facebook + linkedin) < 22.5), f"\n💡 Hint: {self._hint}"
 
-class Exercise10(ThoughtExperiment):
+class Exercise11(ThoughtExperiment):
     _hint = """
     for i in range(len(facebook_list)):
         if (facebook_list[i] > linkedin_list[i]):
@@ -92,7 +99,7 @@ class Exercise10(ThoughtExperiment):
     """)
 
 
-class Exercise11(CodingProblem):
+class Exercise12(CodingProblem):
     _var = 'min_freq'
     _hint = "min_freq = np.min(freq)"
     _solution = CS("min_freq = np.min(freq)")
@@ -100,16 +107,16 @@ class Exercise11(CodingProblem):
         assert min_freq == 0, f"\n💡 Hint: {self._hint}"
 
 
-class Exercise12(ThoughtExperiment):
-    _hint = """
-    deathpenalty_array[freq == min_freq]
-    """
-    _solution = CS("""
-    deathpenalty_array[freq == min_freq]
-    """)
-
 class Exercise13(ThoughtExperiment):
     _hint = """
+    deathpenalty_array[freq == min_freq]
+    """
+    _solution = CS("""
+    deathpenalty_array[freq == min_freq]
+    """)
+
+class Exercise14(ThoughtExperiment):
+    _hint = """
     n_black_deathpenalty / (n_black_deathpenalty + n_white_deathpenalty)
     """
     _solution = CS("""
@@ -117,7 +124,7 @@ class Exercise13(ThoughtExperiment):
     """)
 
 
-class Exercise14(ThoughtExperiment):
+class Exercise15(ThoughtExperiment):
     _hint = """
     white_defendant_and_black_victim_and_deathpenalty = (defendantrace == 1) & (victimrace == 0) & (deathpenalty == 1)
     np.sum(freq[white_defendant_and_black_victim_and_deathpenalty]) / n_white_deathpenalty
@@ -144,7 +151,8 @@ qvars = bind_exercises(globals(), [
     Exercise11,
     Exercise12,
     Exercise13,
-    Exercise14,    
+    Exercise14, 
+    Exercise15, 
     ],
     start=0,
     )
