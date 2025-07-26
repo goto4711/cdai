@@ -1,5 +1,4 @@
 from learntools.core import *
-#from learntools.core.problem import injected
 import numpy as np
 
 class Exercise0(ThoughtExperiment):
@@ -47,14 +46,12 @@ class Exercise5(CodingProblem):
     def check(self, facebook_list, facebook_monday):
         assert (facebook_monday == facebook_list[0]), f"\n💡 Hint: {self._hint}"
 
-
 class Exercise6(CodingProblem):
     _vars = ['facebook_list', 'facebook']
     _hint = "facebook = np.array(facebook_list)"
     _solution = CS("facebook = np.array(facebook_list)")
     def check(self, facebook_list, facebook):
         assert ((facebook == np.array(facebook_list)).all()), f"\n💡 Hint: {self._hint}"
-
 
 class Exercise7(ThoughtExperiment):
     _hint = ('views == 13')
@@ -63,19 +60,29 @@ class Exercise7(ThoughtExperiment):
 class Exercise8(EqualityCheckProblem):
     _var = 'num_views'
     _expected = 14
-    _solution = CS(
-"""if (num_views > 13):
-    print('You are very popular!')
-""")
+    _solution = CS("""if (num_views > 13):
+    print('You are very popular!')""")
 
-class Exercise9(ThoughtExperiment):
-    _hint = """print(for i in range(3):
-    print(i**2)"""
-    _solution = CS("""for i in range(3):
-    print(i**2)""")
+class Exercise9(CodingProblem):
+    _vars = ['facebook', 'linkedin']
+    _hint = "np.mean(facebook + linkedin)"
+    _solution = CS("np.mean(facebook + linkedin)")
+    def check(self, facebook, linkedin):
+        assert (np.mean(facebook + linkedin) > 22) and (np.mean(facebook + linkedin) < 22.5), f"\n💡 Hint: {self._hint}"
 
+class Exercise10(ThoughtExperiment):
+    _hint = ("for i in range(len(facebook_list)):
+    if (facebook_list[i] > linkedin_list[i]):
+        print('Facebook wins.')
+    else:
+        print('LinkedIn wins.')")
+    _solution = CS("for i in range(len(facebook_list)):
+    if (facebook_list[i] > linkedin_list[i]):
+        print('Facebook wins.')
+    else:
+        print('LinkedIn wins.')")
 
-class Exercise10(CodingProblem):
+class Exercise0(CodingProblem):
     _vars = ['facebook', 'linkedin']
     _hint = "np.mean(facebook + linkedin)"
     _solution = CS("np.mean(facebook + linkedin)")
