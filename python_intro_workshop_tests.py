@@ -29,9 +29,9 @@ class Exercise2(CodingProblem):
 
 class Exercise3(ThoughtExperiment):
     _hint = """print(len(my_numbers)
-            print(len(my_days))"""
+print(len(my_days))"""
     _solution = CS("""print(len(my_numbers)
-            print(len(my_days)""")
+print(len(my_days)""")
     
 class Exercise4(CodingProblem):
     _var = 'linkedin_list'
