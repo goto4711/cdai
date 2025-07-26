@@ -3,8 +3,8 @@ from learntools.core import *
 import numpy as np
 
 class Exercise0(ThoughtExperiment):
-    _hint = ("(5 * 3) - 4")
-    _solution = CS("(5 * 3) - 4")
+    _hint = ("5 * (4 - 3)")
+    _solution = CS("5 * (4 - 3)")
 
 
 class Exercise1(CodingProblem):
