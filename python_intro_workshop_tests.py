@@ -27,10 +27,10 @@ class Exercise2(CodingProblem):
 
 
 class Exercise3(ThoughtExperiment):
-    _hint = """print(len(my_numbers)
+    _hint = """print(len(my_numbers))
 print(len(my_days))"""
-    _solution = CS("""print(len(my_numbers)
-print(len(my_days)""")
+    _solution = CS("""print(len(my_numbers))
+print(len(my_days))""")
     
 class Exercise4(CodingProblem):
     _var = 'linkedin_list'
@@ -63,14 +63,22 @@ class Exercise8(EqualityCheckProblem):
     _solution = CS("""if (num_views > 13):
     print('You are very popular!')""")
 
-class Exercise9(CodingProblem):
+class Exercise9(ThoughtExperiment):
+    _hint = ("""for i in range(3):
+    print(i**2)
+""")
+    _solution = CS("""for i in range(3):
+    print(i**2)
+""")
+
+class Exercise10(CodingProblem):
     _vars = ['facebook', 'linkedin']
     _hint = "np.mean(facebook + linkedin)"
     _solution = CS("np.mean(facebook + linkedin)")
     def check(self, facebook, linkedin):
         assert (np.mean(facebook + linkedin) > 22) and (np.mean(facebook + linkedin) < 22.5), f"\n💡 Hint: {self._hint}"
 
-class Exercise10(ThoughtExperiment):
+class Exercise11(ThoughtExperiment):
     _hint = ("""for i in range(len(facebook_list)):
     if (facebook_list[i] > linkedin_list[i]):
         print('Facebook wins.')
@@ -81,29 +89,6 @@ class Exercise10(ThoughtExperiment):
         print('Facebook wins.')
     else:
         print('LinkedIn wins.')""")
-
-class Exercise0(CodingProblem):
-    _vars = ['facebook', 'linkedin']
-    _hint = "np.mean(facebook + linkedin)"
-    _solution = CS("np.mean(facebook + linkedin)")
-    def check(self, facebook, linkedin):
-        assert (np.mean(facebook + linkedin) > 22) and (np.mean(facebook + linkedin) < 22.5), f"\n💡 Hint: {self._hint}"
-
-class Exercise11(ThoughtExperiment):
-    _hint = """
-    for i in range(len(facebook_list)):
-        if (facebook_list[i] > linkedin_list[i]):
-            print('Facebook wins.')
-        else:
-            print('LinkedIn wins.')
-    """
-    _solution = CS("""
-    for i in range(len(facebook_list)):
-        if (facebook_list[i] > linkedin_list[i]):
-            print('Facebook wins.')
-        else:
-            print('LinkedIn wins.')
-    """)
 
 
 class Exercise12(CodingProblem):
