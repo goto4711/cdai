@@ -71,16 +71,16 @@ class Exercise9(CodingProblem):
         assert (np.mean(facebook + linkedin) > 22) and (np.mean(facebook + linkedin) < 22.5), f"\n💡 Hint: {self._hint}"
 
 class Exercise10(ThoughtExperiment):
-    _hint = ("for i in range(len(facebook_list)):
+    _hint = ("""for i in range(len(facebook_list)):
     if (facebook_list[i] > linkedin_list[i]):
         print('Facebook wins.')
     else:
-        print('LinkedIn wins.')")
-    _solution = CS("for i in range(len(facebook_list)):
+        print('LinkedIn wins.')""")
+    _solution = CS("""for i in range(len(facebook_list)):
     if (facebook_list[i] > linkedin_list[i]):
         print('Facebook wins.')
     else:
-        print('LinkedIn wins.')")
+        print('LinkedIn wins.')""")
 
 class Exercise0(CodingProblem):
     _vars = ['facebook', 'linkedin']
