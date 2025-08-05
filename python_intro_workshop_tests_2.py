@@ -2,7 +2,7 @@ from learntools.core import *
 import numpy as np
 
 class Exercise0(ThoughtExperiment):
-    _hint = ("Think about the order of operations (PEMDAS). What happens when you multiply 5 by the result of (4 - 3)?")
+    _hint = ("Think about the order of operations (https://en.wikipedia.org/wiki/Order_of_operations). What happens when you multiply 5 by the result of (4 - 3)?")
     _solution = CS("5 * (4 - 3)")
 
 
