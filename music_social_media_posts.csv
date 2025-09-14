@@ -1,0 +1,16 @@
+post_id,user_id,username,timestamp,post_text,likes,retweets
+101,1,Alice,2023-10-23 09:15:00,"Loving the new #ElectricEchoes album by @AuraBloom! 'Cosmic Drift' is my favorite track. #NewMusic",150,35
+102,2,Bob,2023-10-23 11:30:00,"Just listened to Electric Echoes. It's... interesting. Not what I expected from Aura Bloom.",25,5
+103,3,Charlie,2023-10-23 14:00:00,"My review of #ElectricEchoes is up! A synth-pop masterpiece. #AuraBloom",220,60
+104,1,Alice,2023-10-24 10:00:00,"Can't get enough of this album! #ElectricEchoes #NowPlaying",180,45
+105,4,Diana,2023-10-24 16:20:00,"Is anyone else listening to the new #AuraBloom album? Thoughts?",45,15
+106,5,Eve,2023-10-25 09:05:00,"I think #ElectricEchoes is the best album of the year! Highly recommend.",350,90
+107,2,Bob,2023-10-25 18:00:00,,15,2
+108,3,Charlie,2023-10-26 12:45:00,"The production on 'Starlight' is incredible. What's your favorite song? #ElectricEchoes",190,55
+109,6,Frank,2023-10-26 20:00:00,"Not a fan of the new direction #AuraBloom took with this album.",10,1
+110,1,Alice,2023-10-27 09:30:00,"TGIF! Starting my Friday with #ElectricEchoes on repeat.",210,
+111,5,Eve,2023-10-27 15:00:00,"Just posted my reaction video! It's a 10/10 from me. #AuraBloom",450,150
+112,4,Diana,2023-10-28 11:00:00,"Okay, the album is growing on me. #ElectricEchoes",90,25
+113,2,Bob,2023-10-28 13:20:00,"My final verdict on #ElectricEchoes. 6/10.",30,8
+114,6,Frank,2023-10-29 17:00:00,"Giving @AuraBloom's album another try today.",20,3
+115,3,Charlie,2023-10-29 19:45:00,"Thanks for all the great comments on my #ElectricEchoes review!",150,40
