@@ -1,0 +1,16 @@
+post_id,user_id,username,timestamp,post_text,likes,retweets
+201,1,Alice,2023-11-06 10:00:00,"My favorite song has to be 'Starlight'! #ElectricEchoesGiveaway",250,60
+202,3,Charlie,2023-11-06 11:30:00,"Obsessed with 'Cosmic Drift' from the new album. #AuraBloom",180,40
+203,7,Grace,2023-11-07 15:20:00,"Hoping to win the contest! My pick is 'Starlight'. #ElectricEchoesGiveaway",310,95
+204,5,Eve,2023-11-07 18:00:00,"The vibe of 'Midnight Pulse' is everything. #ElectricEchoesGiveaway",400,120
+205,8,Heidi,2023-11-08 09:05:00,"Just entered the #ElectricEchoesGiveaway. My vote is for 'Starlight'",280,75
+206,2,Bob,2023-11-08 13:00:00,"The album is still great. 'Neon River' is underrated.",90,20
+207,3,Charlie,2023-11-08 17:45:00,"For the #ElectricEchoesGiveaway, it has to be 'Cosmic Drift'!",210,55
+208,8,Heidi,2023-11-08 09:05:00,"Just entered the #ElectricEchoesGiveaway. My vote is for 'Starlight'",280,75
+209,4,Diana,2023-11-09 20:15:00,"Finally listening to the album properly. It's solid.",,30
+210,1,Alice,2023-11-10 12:00:00,"Okay, I changed my mind. 'Cosmic Drift' is the best! #ElectricEchoesGiveaway",290,80
+211,5,Eve,2023-11-10 19:00:00,"The whole album is a journey, but especially 'Starlight'. #ElectricEchoes",480,160
+212,7,Grace,2023-11-11 11:00:00,"Fingers crossed for the ticket giveaway! #ElectricEchoesGiveaway",150,45
+213,6,Frank,2023-11-11 21:30:00,"I think 'Starlight' is the obvious winner. #ElectricEchoesGiveaway",220,65
+214,3,Charlie,2023-11-12 14:00:00,"One more vote for 'Cosmic Drift'! Good luck everyone. #ElectricEchoesGiveaway",240,70
+
