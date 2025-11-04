@@ -8,8 +8,7 @@ class Exercise0(ThoughtExperiment):
 
 class Exercise1(CodingProblem):
     _vars = ['my_classes', 'theory_classes', 'python_classes']
-    _hint = ("You need to combine the two lists using the + operator. "
-             "Remember that list concatenation works as: list1 + list2")
+    _hint = ("You need to add the two variables using the + operator. ")
     _solution = CS('my_classes = theory_classes + python_classes')
     
     def check(self, my_classes, theory_classes, python_classes):
