@@ -13,8 +13,6 @@ class Exercise1(CodingProblem):
     _solution = CS('my_classes = theory_classes + python_classes')
     
     def check(self, my_classes, theory_classes, python_classes):
-        if not isinstance(my_classes, list):
-            raise AssertionError("Expected my_classes to be a list. Did you use the + operator to combine the lists?")
         
         expected = theory_classes + python_classes
         if my_classes != expected:
