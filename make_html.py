@@ -22,6 +22,8 @@ def make_html(notebook_name):
     # 3. Search for the file
     found_path = None
     search_root = '/content/drive/MyDrive'
+    
+    target = notebook_name.lower()
 
     for root, dirs, files_in_dir in os.walk(search_root):
         for file in files_in_dir:
