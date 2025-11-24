@@ -22,12 +22,32 @@ def make_html(notebook_name):
     # 3. Search for the file
     found_path = None
     search_root = '/content/drive/MyDrive'
-    
+
     for root, dirs, files_in_dir in os.walk(search_root):
-        if notebook_name in files_in_dir:
-            found_path = os.path.join(root, notebook_name)
-            print(f"Found: {found_path}")
+        for file in files_in_dir:
+            fname = file.lower()
+
+            # 1. exact match
+            if fname == target:
+                found_path = os.path.join(root, file)
+                print(f"Found exact match: {found_path}")
+                break
+
+            # 2. matches "Copy of ...", "Copy of Copy of ...", etc.
+            if fname.endswith(target):
+                found_path = os.path.join(root, file)
+                print(f"Found matching variant: {found_path}")
+                break
+
+        if found_path:
             break
+
+    
+    #for root, dirs, files_in_dir in os.walk(search_root):
+    #    if notebook_name in files_in_dir:
+    #        found_path = os.path.join(root, notebook_name)
+    #        print(f"Found: {found_path}")
+    #        break
 
     if not found_path:
         print(f"❌ Error: Could not find '{notebook_name}' in Google Drive. (Did you save it?)")
