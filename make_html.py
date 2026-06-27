@@ -1,119 +1,139 @@
 import os
 import nbformat
-from google.colab import drive, files
 
-def make_html(notebook_name):
+
+def _capture_live_notebook():
+    """Grab the notebook exactly as it is on screen, via the Colab frontend.
+
+    Returns (nb_node, detected_name), or (None, None) if it isn't available
+    (e.g. not running in Colab, or the frontend API changed).
     """
-    Searches for a notebook in Google Drive, checks for saved outputs, 
-    cleans corrupt widget metadata, converts to HTML, and downloads it.
-    """
-    
-    # 1. Mount Drive if needed
+    try:
+        from google.colab import _message
+        payload = _message.blocking_request("get_ipynb", request="", timeout_sec=60)
+        nb = nbformat.from_dict(payload["ipynb"])
+        name = nb.metadata.get("colab", {}).get("name")
+        return nb, name
+    except Exception as e:
+        print(f"   - Live capture unavailable ({e}); will look in Google Drive instead.")
+        return None, None
+
+
+def _find_in_drive(notebook_name):
+    """Fallback: mount Drive and search for the saved notebook file by name."""
+    from google.colab import drive
+
     if not os.path.exists('/content/drive'):
         print("Mounting Google Drive...")
         drive.mount('/content/drive')
 
-    # 2. Handle file extension
-    if not notebook_name.endswith('.ipynb'):
-        notebook_name += '.ipynb'
-
     print(f"Searching for '{notebook_name}'...")
-
-    # 3. Search for the file in Google Drive
-    found_path = None
     search_root = '/content/drive/MyDrive'
-    
     target = notebook_name.lower()
 
     for root, dirs, files_in_dir in os.walk(search_root):
         for file in files_in_dir:
             fname = file.lower()
-
-            # Match exact name
+            # Exact name
             if fname == target:
-                found_path = os.path.join(root, file)
-                print(f"Found exact match: {found_path}")
-                break
-
-            # Match "Copy of..." variants
+                path = os.path.join(root, file)
+                print(f"Found exact match: {path}")
+                return path
+            # "Copy of ...", "Solution_...", etc.
             if fname.endswith(target) and fname != target:
-                found_path = os.path.join(root, file)
-                print(f"Found matching variant: {found_path}")
-                break
+                path = os.path.join(root, file)
+                print(f"Found matching variant: {path}")
+                return path
+    return None
 
-        if found_path:
-            break
 
-    if not found_path:
-        print(f"❌ Error: Could not find '{notebook_name}' in Google Drive.")
-        print("   Tip: Ensure you have SAVED the notebook (Ctrl+S) and the name matches.")
-        return
+def make_html(notebook_name=None):
+    """
+    Export the current notebook to HTML for Canvas submission.
 
-    # 4. Check for Outputs & Clean Metadata
-    print("Checking notebook status...")
-    try:
-        with open(found_path, 'r', encoding='utf-8') as f:
-            nb = nbformat.read(f, as_version=4)
-        
-        # --- NEW SAFETY CHECK: Scan for outputs ---
-        code_cells = [c for c in nb.cells if c.cell_type == 'code']
-        total_code = len(code_cells)
-        with_output = sum(1 for c in code_cells if c.get('outputs'))
+    Preferred path: capture the LIVE notebook from the Colab frontend, so the
+    export always reflects what is on screen right now -- no save required, and
+    the filename is detected automatically. If that is unavailable, it falls
+    back to searching Google Drive for a saved file called `notebook_name`.
 
-        print(f"   - Status: {with_output}/{total_code} code cells have outputs.")
+    Usage (Colab):  make_html()                         # auto-detect everything
+                    make_html("Week4_Workshop.ipynb")   # force a name if needed
+    """
+    from google.colab import files
 
-        # If there are code cells, but NO outputs, it's likely a save error.
-        if total_code > 0 and with_output == 0:
-            print("\n" + "="*60)
-            print("⚠️ WARNING: NO OUTPUTS DETECTED! ⚠️")
-            print("The HTML file will contain your code, but NO results or plots.")
-            print("Possible causes:")
-            print("   1. You ran the cells but forgot to SAVE (Ctrl+S).")
-            print("   2. You really haven't run any code yet.")
-            print("="*60)
-            
-            user_choice = input("Do you want to create the HTML anyway? (y/n): ")
-            if user_choice.lower() != 'y':
-                print("Aborted. Please Save your notebook and try again.")
-                return
-        # ------------------------------------------
-        
-        # Remove broken widget metadata if present (fixes 'state' KeyErrors)
-        if 'widgets' in nb.metadata:
-            del nb.metadata['widgets']
-            print("   - Cleaned corrupt widget metadata.")
-        
-        # Save to a temporary file in the VM
-        temp_nb_path = "/content/temp_conversion_source.ipynb"
-        with open(temp_nb_path, 'w', encoding='utf-8') as f:
-            nbformat.write(nb, f)
+    # --- 1. Get the notebook (live first, Drive as fallback) ---
+    print("Capturing notebook...")
+    nb, detected_name = _capture_live_notebook()
 
-    except Exception as e:
-        print(f"❌ Error reading notebook structure: {e}")
-        return
+    if nb is not None:
+        print("   - Captured the live notebook directly (no save needed).")
+        if not notebook_name:
+            notebook_name = detected_name or "notebook.ipynb"
+    else:
+        if not notebook_name:
+            print("\u274c Error: could not capture the live notebook and no filename was given.")
+            print("   Tip: pass the name, e.g. make_html('Week4_Workshop.ipynb').")
+            return
+        if not notebook_name.endswith('.ipynb'):
+            notebook_name += '.ipynb'
+        found_path = _find_in_drive(notebook_name)
+        if not found_path:
+            print(f"\u274c Error: Could not find '{notebook_name}' in Google Drive.")
+            print("   Tip: SAVE the notebook (Ctrl+S) and check that the name matches.")
+            return
+        try:
+            with open(found_path, 'r', encoding='utf-8') as f:
+                nb = nbformat.read(f, as_version=4)
+        except Exception as e:
+            print(f"\u274c Error reading notebook: {e}")
+            return
 
-    # 5. Convert to HTML
+    if not notebook_name.endswith('.ipynb'):
+        notebook_name += '.ipynb'
+
+    # --- 2. Sanity-check outputs (non-blocking: never halts a 'Run all') ---
+    code_cells = [c for c in nb.cells if c.cell_type == 'code']
+    total_code = len(code_cells)
+    with_output = sum(1 for c in code_cells if c.get('outputs'))
+    print(f"   - Status: {with_output}/{total_code} code cells have outputs.")
+
+    if total_code > 0 and with_output == 0:
+        print("\n" + "=" * 60)
+        print("\u26a0\ufe0f  WARNING: NO OUTPUTS DETECTED!")
+        print("The HTML will contain your code but NO results or plots.")
+        print("If that's not what you want: run all cells, then re-run this cell.")
+        print("Creating the HTML anyway so your run is not interrupted...")
+        print("=" * 60 + "\n")
+
+    # --- 3. Clean corrupt widget metadata (fixes 'state' KeyErrors) ---
+    if 'widgets' in nb.metadata:
+        del nb.metadata['widgets']
+        print("   - Cleaned corrupt widget metadata.")
+
+    # --- 4. Write a temp copy and convert to HTML ---
+    temp_nb_path = "/content/temp_conversion_source.ipynb"
+    with open(temp_nb_path, 'w', encoding='utf-8') as f:
+        nbformat.write(nb, f)
+
     print("Converting to HTML...")
-    # Using --template classic for better compatibility with educational tools
-    exit_code = os.system(f'jupyter nbconvert --to html --template classic "{temp_nb_path}"')
-    
+    # --template classic keeps compatibility with educational tools.
+    exit_code = os.system(
+        f'jupyter nbconvert --to html --template classic "{temp_nb_path}"'
+    )
     if exit_code != 0:
-        print("❌ Error: Conversion command failed.")
+        print("\u274c Error: the nbconvert command failed.")
         return
 
-    # 6. Rename and Download
+    # --- 5. Rename and download ---
     temp_html_path = temp_nb_path.replace('.ipynb', '.html')
     final_output_name = notebook_name.replace('.ipynb', '.html')
 
     if os.path.exists(temp_html_path):
-        # Move to content root and rename
         dest_path = f"/content/{final_output_name}"
         if os.path.exists(dest_path):
             os.remove(dest_path)
-            
         os.rename(temp_html_path, dest_path)
-        
-        print(f"✅ Success. Downloading {final_output_name}...")
+        print(f"\u2705 Success. Downloading {final_output_name} ...")
         files.download(dest_path)
     else:
-        print("❌ Error: HTML file was not created.")
+        print("\u274c Error: HTML file was not created.")
