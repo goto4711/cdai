@@ -135,7 +135,7 @@ class Exercise10(CodingProblem):
         if 'target_text' not in ds.column_names:
             raise AssertionError("Column 'target_text' not found. Make sure make_text creates it.")
         for row in ds.select(range(50)):
-            expected = "equivalent" if row['label'] == 1 else "not equivalent"
+            expected = "equivalent" if row['label'] == 1 else "non_equivalent"
             if row['target_text'] != expected:
                 raise AssertionError(
                     f"For label {row['label']} the target_text should be '{expected}', "
@@ -166,6 +166,44 @@ class Exercise12(ThoughtExperiment):
                  "text-out, so one recipe covers classification, translation and summarisation.")
 
 
+class Exercise13(CodingProblem):
+    _vars = ['candidate_labels']
+    _hint = ("Zero-shot means YOU decide the categories at prediction time - no training. "
+             "Set candidate_labels to a list of at least two category names (strings), "
+             "e.g. ['politics', 'economy', 'culture'].")
+    _solution = CS('candidate_labels = ["politics", "economy", "war", "climate", "technology"]')
+
+    def check(self, candidate_labels):
+        if not isinstance(candidate_labels, (list, tuple)):
+            raise AssertionError("candidate_labels should be a list of category names (strings).")
+        if len(candidate_labels) < 2:
+            raise AssertionError("Give at least two categories so the model has a choice.")
+        if not all(isinstance(c, str) and c.strip() for c in candidate_labels):
+            raise AssertionError("Every category in candidate_labels should be a non-empty string.")
+
+
+class Exercise14(CodingProblem):
+    _vars = ['messages']
+    _hint = ("A chat prompt is a list of {'role': ..., 'content': ...} dictionaries. "
+             "Use role 'user' and put your instruction - what the model should do with the "
+             "speech - in 'content'. Copy the pattern from the translation cell above.")
+    _solution = CS('''messages = [
+    {"role": "user",
+     "content": f"List the three main topics of this speech.\\n\\n{text_sotu_europe}"}
+]''')
+
+    def check(self, messages):
+        if not isinstance(messages, list) or len(messages) == 0:
+            raise AssertionError("messages should be a non-empty list of role/content dictionaries.")
+        if not all(isinstance(m, dict) and 'role' in m and 'content' in m for m in messages):
+            raise AssertionError("Each item in messages needs a 'role' and a 'content' key.")
+        user_turns = [m for m in messages if m['role'] == 'user']
+        if not user_turns:
+            raise AssertionError("Include at least one message with role 'user'.")
+        if not any(isinstance(m['content'], str) and len(m['content'].strip()) > 30 for m in user_turns):
+            raise AssertionError("Write an actual instruction in the 'content' of your user message.")
+
+
 
 qvars = bind_exercises(globals(), [
     Exercise0,
@@ -181,6 +219,8 @@ qvars = bind_exercises(globals(), [
     Exercise10,
     Exercise11,
     Exercise12,
+    Exercise13,
+    Exercise14,
     ],
     start=0,
 )
