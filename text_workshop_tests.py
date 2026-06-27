@@ -123,56 +123,48 @@ disp = ConfusionMatrixDisplay(confusion_matrix=cm)
 disp.plot()
 plt.show()""")
 
-
 class Exercise10(CodingProblem):
-    _vars = ['df_pat']
-    _hint = ("Load the patient data CSV file and explore its structure. "
-             "Use pd.read_csv() to load the data, then use .info() to see column types and null values, "
-             "and .head() to examine the first few rows. Understanding your data structure is crucial for NLP tasks.")
-    _solution = CS("""df_pat = pd.read_csv('./uspppm-data/train.csv')
-print(df_pat.info())
-print(df_pat.head(3))""")
-    
-    def check(self, df_pat):
-        if not isinstance(df_pat, pd.DataFrame):
-            raise AssertionError("df_pat should be a pandas DataFrame. Make sure you used pd.read_csv() correctly.")
-        
-        if df_pat.empty:
-            raise AssertionError("The DataFrame df_pat is empty. Check that the CSV file exists and loaded correctly.")
-        
-        # Check for expected structure (common columns in medical/patient data)
-        if len(df_pat.columns) < 2:
-            raise AssertionError("The DataFrame seems to have very few columns. Make sure the CSV loaded properly.")
+    _vars = ['mrpc']
+    _hint = ("The numeric label has to become a WORD so the model can write it. "
+             "1 means the two sentences are paraphrases -> 'equivalent'; "
+             "0 -> 'not equivalent'. Return a string, not the number.")
+    _solution = CS('"equivalent" if y == 1 else "not equivalent"')
+
+    def check(self, mrpc):
+        ds = mrpc['train']
+        if 'target_text' not in ds.column_names:
+            raise AssertionError("Column 'target_text' not found. Make sure make_text creates it.")
+        for row in ds.select(range(50)):
+            expected = "equivalent" if row['label'] == 1 else "not equivalent"
+            if row['target_text'] != expected:
+                raise AssertionError(
+                    f"For label {row['label']} the target_text should be '{expected}', "
+                    f"but got '{row['target_text']}'. The label must become a WORD.")
 
 
-class Exercise11(ThoughtExperiment):
-    _hint = ("Analyze the distribution of different contexts in your patient data. "
-             "Use value_counts() on the 'context' column to see how many examples exist for each context type. "
-             "Understanding context distribution helps with model training and evaluation strategies.")
-    _solution = CS("""df_pat['context'].value_counts()""")
+class Exercise11(CodingProblem):
+    _vars = ['model_t5']
+    _hint = ("A classification head outputs class NUMBERS and cannot write words. "
+             "We need a text-to-text (encoder-decoder) model that can GENERATE text. "
+             "The Auto class for that is AutoModelForSeq2SeqLM.")
+    _solution = CS("model_t5 = AutoModelForSeq2SeqLM.from_pretrained(t5_checkpoint).to(device)")
+
+    def check(self, model_t5):
+        if not getattr(model_t5.config, 'is_encoder_decoder', False):
+            raise AssertionError(
+                "This is not a text-to-text model - a classification head can't WRITE "
+                "words. Load it with AutoModelForSeq2SeqLM so the model can generate text.")
 
 
 class Exercise12(ThoughtExperiment):
-    _hint = ("Initialize a tokenizer for your specific model checkpoint. "
-             "AutoTokenizer.from_pretrained() automatically loads the correct tokenizer for your model. "
-             "Each pre-trained model has its own tokenizer that matches the vocabulary used during training.")
-    _solution = CS("""tokenizer_pat = AutoTokenizer.from_pretrained(checkpoint_pat)""")
+    _hint = ("Think about what actually changes between tasks in the text-to-text world: "
+             "the input text and the target (label) text - not the model or the training code.")
+    _solution = ("Almost nothing about the mechanism changes. You feed different input text "
+                 "(e.g. 'translate English to German: ...') and a different target text (the "
+                 "German sentence) as the labels. Same AutoModelForSeq2SeqLM, same Trainer, "
+                 "same generate() call. That is the T5 insight: every task is text-in / "
+                 "text-out, so one recipe covers classification, translation and summarisation.")
 
-
-class Exercise13(ThoughtExperiment):
-    _hint = ("Apply tokenization to your entire dataset using the map() function. "
-             "Use batched=True for efficient processing of large datasets. "
-             "The map() function applies your tokenizer function to all examples, creating the input format needed for transformer models.")
-    _solution = CS("""ds_pat_encoded = ds_pat.map(tokenizer_pat_func, batched=True)
-ds_pat_encoded""")
-
-
-class Exercise14(ThoughtExperiment):
-    _hint = ("Compare the original text input with its tokenized representation. "
-             "Print both the original 'input' text and the tokenized 'input_ids' to understand "
-             "how your text gets converted to numerical format that the model can process.")
-    _solution = CS("""print('input: ', ds_pat_encoded[0]['input'])
-print('input_ids: ', ds_pat_encoded[0]['input_ids'])""")
 
 
 qvars = bind_exercises(globals(), [
@@ -189,8 +181,6 @@ qvars = bind_exercises(globals(), [
     Exercise10,
     Exercise11,
     Exercise12,
-    Exercise13,
-    Exercise14,
     ],
     start=0,
 )
