@@ -1,0 +1,52 @@
+# Cultural Data Analysis: Python libraries for all course notebooks
+# Install in two steps (learntools must come second):
+#   pip install -r requirements.txt
+#   pip install --no-build-isolation git+https://github.com/Kaggle/learntools.git
+# Tested with Python 3.12 (the version Google Colab uses).
+
+# Notebooks
+jupyter
+ipywidgets
+
+# Week 1-2: Python and pandas
+numpy
+pandas<3                # the notebooks were written for pandas 2
+matplotlib
+seaborn
+
+# Week 3: machine learning
+scipy
+scikit-learn
+palettable
+graphviz                # also needs the Graphviz program: brew install graphviz
+
+# Week 4: text
+nltk
+gensim
+wordcloud
+transformers<5          # the notebooks were written for transformers 4
+torch
+datasets
+huggingface_hub
+accelerate
+sacremoses
+opendatasets
+geopandas
+geopy
+folium
+
+# Week 5: images
+pillow
+opencv-python
+pytesseract             # also needs the Tesseract program: brew install tesseract
+easyocr
+
+# Week 6: social media traces
+requests
+beautifulsoup4
+networkx
+sentence-transformers
+bertopic
+hdbscan
+umap-learn
+openai
