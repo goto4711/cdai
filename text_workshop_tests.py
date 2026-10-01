@@ -127,8 +127,8 @@ class Exercise10(CodingProblem):
     _vars = ['mrpc']
     _hint = ("The numeric label has to become a WORD so the model can write it. "
              "1 means the two sentences are paraphrases -> 'equivalent'; "
-             "0 -> 'not equivalent'. Return a string, not the number.")
-    _solution = CS('"equivalent" if y == 1 else "not equivalent"')
+             "0 -> 'non_equivalent'. Return a string, not the number.")
+    _solution = CS('"equivalent" if y == 1 else "non_equivalent"')
 
     def check(self, mrpc):
         ds = mrpc['train']
