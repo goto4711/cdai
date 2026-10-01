@@ -49,19 +49,10 @@ class Exercise3(ThoughtExperiment):
 print(len(my_days))""")
 
 
-class Exercise4(CodingProblem):
-    _vars = ['linkedin_list']
+class Exercise4(ThoughtExperiment):
     _hint = ("Use the sum() function to add all numbers in a list. "
              "For example: sum([1, 2, 3]) returns 6.")
     _solution = CS("sum(linkedin_list)")
-    
-    def check(self, linkedin_list):
-        expected_sum = sum(linkedin_list)
-        if expected_sum <= 70:
-            raise AssertionError(f"The sum of linkedin_list is {expected_sum}. "
-                               "Make sure your list contains values that sum to more than 70.")
-        # If we get here, the sum is > 70 as expected
-
 
 class Exercise5(CodingProblem):
     _vars = ['facebook_list', 'facebook_monday']
@@ -98,19 +89,11 @@ class Exercise7(ThoughtExperiment):
     _solution = CS("views == 13")
 
 
-class Exercise8(CodingProblem):
-    _vars = ['num_views']
+class Exercise8(ThoughtExperiment):
     _hint = ("Use an if statement to check if num_views is greater than 13. "
              "The syntax is: if (condition): followed by indented code.")
     _solution = CS("""if (num_views > 13):
     print('You are very popular!')""")
-    
-    def check(self, num_views):
-        # This matches your original logic - just checking that num_views > 13
-        if num_views <= 13:
-            raise AssertionError("For this exercise, num_views should be greater than 13 "
-                               "to demonstrate the if statement working.")
-
 
 class Exercise9(ThoughtExperiment):
     _hint = ("Use a for loop with range(3) to iterate through numbers 0, 1, 2. "
@@ -120,19 +103,10 @@ class Exercise9(ThoughtExperiment):
     print(i**2)""")
 
 
-class Exercise10(CodingProblem):
-    _vars = ['facebook', 'linkedin']
+class Exercise10(ThoughtExperiment):
     _hint = ("First add the two NumPy arrays together, then use np.mean() to calculate the average. "
              "NumPy arrays can be added with the + operator: array1 + array2")
     _solution = CS("np.mean(facebook + linkedin)")
-    
-    def check(self, facebook, linkedin):
-        expected_avg = np.mean(facebook + linkedin)
-        # Keep your original range check logic
-        if not (expected_avg > 22 and expected_avg < 22.5):
-            raise AssertionError(f"Expected the average to be between 22 and 22.5, "
-                               f"but got {expected_avg:.2f}. Check your calculation.")
-
 
 class Exercise11(ThoughtExperiment):
     _hint = ("Use a for loop with range(len(facebook_list)) to iterate through indices. "
@@ -170,7 +144,7 @@ class Exercise13(ThoughtExperiment):
 class Exercise14(ThoughtExperiment):
     _hint = ("Calculate the proportion by dividing the number of black defendants with death penalty "
              "by the total number of defendants with death penalty. "
-             "Use: numerator / (numerator + denominator)")
+             "Use: n_black_deathpenalty / (n_black_deathpenalty + n_white_deathpenalty)")
     _solution = CS("n_black_deathpenalty / (n_black_deathpenalty + n_white_deathpenalty)")
 
 

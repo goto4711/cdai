@@ -22,19 +22,11 @@ class Exercise0(CodingProblem):
             raise AssertionError("The DataFrame seems to have too few columns. Make sure you've loaded the complete dataset.")
 
 
-class Exercise1(CodingProblem):
-    _vars = ['congress_114']
+class Exercise1(ThoughtExperiment):
     _hint = ("Use the .tail() method to display the last few rows of a DataFrame. "
              "This is useful for checking the end of your dataset and ensuring data loaded completely. "
              "The syntax is similar to .head(): dataframe_name.tail(n)")
     _solution = CS("congress_114.tail(5)")
-    
-    def check(self, congress_114):
-        if not isinstance(congress_114, pd.DataFrame):
-            raise AssertionError("Make sure 'congress_114' is a pandas DataFrame.")
-        
-        if congress_114.empty:
-            raise AssertionError("The DataFrame appears to be empty. Make sure you've loaded the data correctly.")
 
 
 class Exercise2(CodingProblem):

@@ -43,6 +43,12 @@ df_hs.head()""")
         if not unique_labels.issubset(expected_labels):
             raise AssertionError(f"Expected labels to be 'Non-hateful' and 'Hateful', but found {unique_labels}.")
 
+        # Check the direction of the mapping: 0 -> 'Non-hateful', 1 -> 'Hateful'
+        expected = np.where(df_hs['label'] == 0, 'Non-hateful', 'Hateful')
+        if not (df_hs['label_name'].values == expected).all():
+            raise AssertionError("Some labels are mapped the wrong way round. "
+                                 "Label 0 should become 'Non-hateful' and label 1 'Hateful'.")
+
 
 class Exercise3(ThoughtExperiment):
     _hint = ("Visualize the class distribution in your hate speech dataset using a bar plot. "
@@ -67,18 +73,20 @@ plt.show()""")
 
 
 class Exercise5(CodingProblem):
-    _vars = ['tokenized_text']
+    _vars = ['input_ids', 'tokenized_text', 'token2idx']
     _hint = ("Convert tokens to numerical IDs using a token-to-index mapping. "
              "This is a fundamental step in NLP: converting text tokens to numbers that models can process. "
              "Use list comprehension to map each token to its corresponding ID: [token2idx[token] for token in tokens]")
     _solution = CS("input_ids = [token2idx[token] for token in tokenized_text]")
-    
-    def check(self, tokenized_text):
-        if not tokenized_text or len(tokenized_text) == 0:
-            raise AssertionError("tokenized_text appears to be empty. Make sure you've tokenized your text properly.")
-        
-        if not isinstance(tokenized_text, (list, tuple)):
-            raise AssertionError("tokenized_text should be a list or tuple of tokens.")
+
+    def check(self, input_ids, tokenized_text, token2idx):
+        if not isinstance(input_ids, list):
+            raise AssertionError("input_ids should be a list of numbers. Use a list comprehension: [... for token in tokenized_text].")
+        expected = [token2idx[token] for token in tokenized_text]
+        if len(input_ids) != len(expected):
+            raise AssertionError(f"Expected {len(expected)} ids (one per token in tokenized_text), but got {len(input_ids)}.")
+        if input_ids != expected:
+            raise AssertionError("Some ids do not match. Look up each token in token2idx: token2idx[token].")
 
 
 class Exercise6(ThoughtExperiment):
@@ -132,9 +140,13 @@ class Exercise10(CodingProblem):
 
     def check(self, mrpc):
         ds = mrpc['train']
-        if 'target_text' not in ds.column_names:
-            raise AssertionError("Column 'target_text' not found. Make sure make_text creates it.")
+        for col in ('input_text', 'target_text'):
+            if col not in ds.column_names:
+                raise AssertionError(f"Column '{col}' not found. Make sure make_text creates it.")
         for row in ds.select(range(50)):
+            if row['sentence1'] not in row['input_text'] or row['sentence2'] not in row['input_text']:
+                raise AssertionError("input_text should contain both sentences: "
+                                     "'mrpc sentence1: ' + s1 + ' sentence2: ' + s2.")
             expected = "equivalent" if row['label'] == 1 else "non_equivalent"
             if row['target_text'] != expected:
                 raise AssertionError(
@@ -183,7 +195,7 @@ class Exercise13(CodingProblem):
 
 
 class Exercise14(CodingProblem):
-    _vars = ['messages']
+    _vars = ['messages', 'text_sotu_europe']
     _hint = ("A chat prompt is a list of {'role': ..., 'content': ...} dictionaries. "
              "Use role 'user' and put your instruction - what the model should do with the "
              "speech - in 'content'. Copy the pattern from the translation cell above.")
@@ -192,7 +204,7 @@ class Exercise14(CodingProblem):
      "content": f"List the three main topics of this speech.\\n\\n{text_sotu_europe}"}
 ]''')
 
-    def check(self, messages):
+    def check(self, messages, text_sotu_europe):
         if not isinstance(messages, list) or len(messages) == 0:
             raise AssertionError("messages should be a non-empty list of role/content dictionaries.")
         if not all(isinstance(m, dict) and 'role' in m and 'content' in m for m in messages):
@@ -200,9 +212,14 @@ class Exercise14(CodingProblem):
         user_turns = [m for m in messages if m['role'] == 'user']
         if not user_turns:
             raise AssertionError("Include at least one message with role 'user'.")
-        if not any(isinstance(m['content'], str) and len(m['content'].strip()) > 30 for m in user_turns):
-            raise AssertionError("Write an actual instruction in the 'content' of your user message.")
-
+        # The speech itself does not count as an instruction - look at what is left without it
+        instructions = [m['content'].replace(text_sotu_europe, '').strip()
+                        for m in user_turns if isinstance(m['content'], str)]
+        if any('___' in t for t in instructions):
+            raise AssertionError("Replace ___ with your own instruction for the model.")
+        if not any(len(t) >= 10 for t in instructions):
+            raise AssertionError("Write an actual instruction in the 'content' of your user message, "
+                                 "e.g. 'List the three main topics of this speech.'")
 
 
 qvars = bind_exercises(globals(), [

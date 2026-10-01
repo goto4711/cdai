@@ -94,8 +94,11 @@ def _check_run_order(nb):
     def _text(src):  # source can be a string or a list of lines
         return ''.join(src) if isinstance(src, list) else (src or '')
 
+    # The cell that calls make_html() is still running while the notebook is captured,
+    # so it has no execution count yet - leave it out of the check.
     counts = [c.get('execution_count') for c in nb.cells
-              if c.cell_type == 'code' and _text(c.get('source')).strip()]
+              if c.cell_type == 'code' and _text(c.get('source')).strip()
+              and 'make_html(' not in _text(c.get('source'))]
     not_run = sum(1 for n in counts if n is None)
     ran = [n for n in counts if n is not None]
     out_of_order = sum(1 for a, b in zip(ran, ran[1:]) if b < a)
