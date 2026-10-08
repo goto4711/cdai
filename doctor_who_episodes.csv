@@ -1,0 +1,176 @@
+era,season_number,episode_number,episode_title,type,first_aired,uk_viewers,rating,duration
+revived,1,1,Rose,episode,2005-03-26,10.81,76,45
+revived,1,2,The End of the World,episode,2005-04-02,7.97,76,44
+revived,1,3,The Unquiet Dead,episode,2005-04-09,8.86,80,44
+revived,1,4,Aliens of London,episode,2005-04-16,7.63,82,45
+revived,1,5,World War Three,episode,2005-04-23,7.98,81,42
+revived,1,6,Dalek,episode,2005-04-30,8.63,84,45
+revived,1,7,The Long Game,episode,2005-05-07,8.01,,44
+revived,1,8,Father's Day,episode,2005-05-14,8.06,83,45
+revived,1,9,The Empty Child,episode,2005-05-21,"7,110,000",84,45
+revived,1,10,The Doctor Dances,episode,2005-05-28,6.86m,85,45
+revived,1,11,Boom Town,episode,2005-06-04,"7,680,000",82,45
+revived,1,12,Bad Wolf,episode,2005-06-11,6.81m,86,45
+revived,1,13,The Parting of the Ways,episode,2005-06-18,6.91,89,45
+revived,2,,The Christmas Invasion,special,2005-12-25,9.84,84,60
+revived,2,1,New Earth,episode,2006-04-15,8.62,85,45
+revived,2,2,Tooth and Claw,episode,2006-04-22,9.24,83,45
+revived,2,3,School Reunion,episode,2006-04-29,8.31,85,45
+revived,2,4,The Girl in the Fireplace,episode,2006-05-06,7.90,84,45
+revived,2,5,Rise of the Cybermen,episode,2006-05-13,"9,220,000",86,45
+revived,2,6,The Age of Steel,episode,2006-05-20,7.63,86,45
+revived,2,7,The Idiot's Lantern,episode,2006-05-27,6.76,84,45
+revived,2,8,The Impossible Planet,episode,2006-06-03,6.32,85,45
+revived,2,9,The Satan Pit,episode,2006-06-10,6.08,86,45
+revived,2,10,Love & Monsters,episode,2006-06-17,6.66,76,45
+revived,2,11,Fear Her,episode,2006-06-24,"7,140,000",83,45
+revived,2,12,Army of Ghosts,episode,2006-07-01,8.19,86,45
+revived,2,13,Doomsday,episode,2006-07-08,"8,220,000",89,45
+revived,3,,The Runaway Bride,special,2006-12-25,9.35,84,60
+revived,3,1,Smith and Jones,episode,2007-03-31,8.71,88,45
+revived,3,2,The Shakespeare Code,episode,2007-04-07,7.23,87,45
+revived,3,3,Gridlock,episode,2007-04-14,8.41,85,45
+revived,3,4,Daleks in Manhattan,episode,2007-04-21,6.69,86,45
+revived,3,5,Evolution of the Daleks,episode,2007-04-28,6.97,85,45
+revived,3,6,The Lazarus Experiment,episode,2007-05-05,7.19,86,45
+revived,3,7,42,episode,2007-05-19,7.41,85,45
+revived,3,8,Human Nature,episode,2007-05-26,7.74,86,45
+revived,3,9,The Family of Blood,episode,2007-06-02,7.21,86,45
+revived,3,10,Blink,episode,2007-06-09,6.62,87,45
+revived,3,11,Utopia,episode,2007-06-16,7.84,87,45
+revived,3,12,The Sound of Drums,episode,2007-06-23,7.51,87,45
+revived,3,13,Last of the Time Lords,episode,2007-06-30,8.61,88,52
+revived,4,,Voyage of the Damned,special,2007-12-25,13.31,86,72
+revived,4,1,Partners in Crime,episode,2008-04-05,9.14,88,50
+revived,4,2,The Fires of Pompeii,episode,2008-04-12,9.04,,50
+revived,4,3,Planet of the Ood,episode,2008-04-19,"7,500,000",87,45
+revived,4,4,The Sontaran Stratagem,episode,2008-04-26,7.06,87,45
+revived,4,5,The Poison Sky,episode,2008-05-03,"6,530,000",88,45
+revived,4,6,The Doctor's Daughter,episode,2008-05-10,7.33,88,45
+revived,4,7,The Unicorn and the Wasp,episode,2008-05-17,"8,410,000",86,45
+revived,4,8,Silence in the Library,episode,2008-05-31,6.27,89,45
+revived,4,9,Forest of the Dead,episode,2008-06-07,7.84,89,45
+revived,4,10,Midnight,episode,2008-06-14,8.05,86,45
+revived,4,11,Turn Left,episode,2008-06-21,8.09,88,50
+revived,4,12,The Stolen Earth,episode,2008-06-28,8.78,91,45
+revived,4,13,Journey's End,episode,2008-07-05,10.57,91,63
+revived,,1,The Next Doctor,special,2008-12-25,13.1,86,60
+revived,,2,Planet of the Dead,special,2009-04-11,9.75,88,60
+revived,,3,The Waters of Mars,special,2009-11-15,10.32,88,60
+revived,,4,The End of Time – Part One,special,2009-12-25,12.04,87,60
+revived,,5,The End of Time – Part Two,special,2010-01-01,12.27m,89,75
+revived,5,1,The Eleventh Hour,episode,2010-04-03,10.09,86,65
+revived,5,2,The Beast Below,episode,2010-04-10,8.42,86,45
+revived,5,3,Victory of the Daleks,episode,2010-04-17,8.21,84,45
+revived,5,4,The Time of Angels,episode,2010-04-24,8.59,,45
+revived,5,5,Flesh and Stone,episode,2010-05-01,"8,500,000",86,45
+revived,5,6,The Vampires of Venice,episode,2010-05-08,7.68,,50
+revived,5,7,Amy's Choice,episode,2010-05-15,7.55,84,45
+revived,5,8,The Hungry Earth,episode,2010-05-22,6.49,86,45
+revived,5,9,Cold Blood,episode,2010-05-29,7.49,85,45
+revived,5,10,Vincent and the Doctor,episode,2010-06-05,6.76,86,45
+revived,5,11,The Lodger,episode,2010-06-12,6.44,87,45
+revived,5,12,The Pandorica Opens,episode,2010-06-19,7.57,88,50
+revived,5,13,The Big Bang,episode,2010-06-26,6.7,89,55
+revived,6,,A Christmas Carol,special,2010-12-25,12.11m,83,60
+revived,6,1,The Impossible Astronaut,episode,2011-04-23,8.86,88,45
+revived,6,2,Day of the Moon,episode,2011-04-30,7.30,87,45
+revived,6,3,The Curse of the Black Spot,episode,2011-05-07,7.85,86,45
+revived,6,4,The Doctor's Wife,episode,2011-05-14,7.97m,87,45
+revived,6,5,The Rebel Flesh,episode,2011-05-21,7.35,85,45
+revived,6,6,The Almost People,episode,2011-05-28,6.72,86,45
+revived,6,7,A Good Man Goes to War,episode,2011-06-04,7.51,88,50
+revived,6,8,Let's Kill Hitler,episode,2011-08-27,8.10m,85,50
+revived,6,9,Night Terrors,episode,2011-09-03,"7,070,000",86,45
+revived,6,10,The Girl Who Waited,episode,2011-09-10,7.60,85,45
+revived,6,11,The God Complex,episode,2011-09-17,6.77,86,50
+revived,6,12,Closing Time,episode,2011-09-24,6.93m,86,45
+revived,6,13,The Wedding of River Song,episode,2011-10-01,7.67,86,45
+revived,7,,"The Doctor, the Widow and the Wardrobe",special,2011-12-25,10.77m,84,60
+revived,7,1,Asylum of the Daleks,episode,2012-09-01,8.33,89,50
+revived,7,2,Dinosaurs on a Spaceship,episode,2012-09-08,7.57,87,45
+revived,7,3,A Town Called Mercy,episode,2012-09-15,"8,420,000",85,45
+revived,7,4,The Power of Three,episode,2012-09-22,7.67,87,41
+revived,7,5,The Angels Take Manhattan,episode,2012-09-29,"7,820,000",88,45
+revived,7,,The Snowmen,special,2012-12-25,9.87,87,60
+revived,7,6,The Bells of Saint John,episode,2013-03-30,"8,440,000",87,45
+revived,7,7,The Rings of Akhaten,episode,2013-04-06,7.45,84,44
+revived,7,8,Cold War,episode,2013-04-13,7.37,84,45
+revived,7,9,Hide,episode,2013-04-20,6.61m,85,45
+revived,7,10,Journey to the Centre of the TARDIS,episode,2013-04-27,6.50,85,45
+revived,7,11,The Crimson Horror,episode,2013-05-04,6.47,85,45
+revived,7,12,Nightmare in Silver,episode,2013-05-11,6.64,,45
+revived,7,13,The Name of the Doctor,episode,2013-05-18,7.45,88,45
+revived,,1,The Day of the Doctor,special,2013-11-23,12.8,88,77
+revived,,2,The Time of the Doctor,special,2013-12-25,11.14,83,60
+revived,8,1,Deep Breath,episode,2014-08-23,9.17,82,76
+revived,8,2,Into the Dalek,episode,2014-08-30,7.29,84,45
+revived,8,3,Robot of Sherwood,episode,2014-09-06,7.28,82,46
+revived,8,4,Listen,episode,2014-09-13,7.01,82,48
+revived,8,5,Time Heist,episode,2014-09-20,6.99,84,45
+revived,8,6,The Caretaker,episode,2014-09-27,6.82m,83,45
+revived,8,7,Kill the Moon,episode,2014-10-04,6.91,82,45
+revived,8,8,Mummy on the Orient Express,episode,2014-10-11,7.11,85,47
+revived,8,9,Flatline,episode,2014-10-18,6.71,85,43
+revived,8,10,In the Forest of the Night,episode,2014-10-25,6.92,83,45
+revived,8,11,Dark Water,episode,2014-11-01,7.34,85,46
+revived,8,12,Death in Heaven,episode,2014-11-08,7.60m,83,57
+revived,9,,Last Christmas,special,2014-12-25,"8,280,000",82,60
+revived,9,1,The Magician's Apprentice,episode,2015-09-19,6.54,84,46
+revived,9,2,The Witch's Familiar,episode,2015-09-26,5.71,83,48
+revived,9,3,Under the Lake,episode,2015-10-03,5.63,84,43
+revived,9,4,Before the Flood,episode,2015-10-10,6.05,83,42
+revived,9,5,The Girl Who Died,episode,2015-10-17,6.56,82,46
+revived,9,6,The Woman Who Lived,episode,2015-10-24,"6,110,000",81,46
+revived,9,7,The Zygon Invasion,episode,2015-10-31,5.76,82,46
+revived,9,8,The Zygon Inversion,episode,2015-11-07,6.03,84,46
+revived,9,9,Sleep No More,episode,2015-11-14,5.61,78,45
+revived,9,10,Face the Raven,episode,2015-11-21,6.05,84,47
+revived,9,11,Heaven Sent,episode,2015-11-28,6.19,80,54
+revived,9,12,Hell Bent,episode,2015-12-05,"6,170,000",82,61
+revived,9,,The Husbands of River Song,special,2015-12-25,7.69m,82,56
+revived,10,,The Return of Doctor Mysterio,special,2016-12-25,7.83,82,60
+revived,10,1,The Pilot,episode,2017-04-15,6.68,83,50
+revived,10,2,Smile,episode,2017-04-22,5.98,83,46
+revived,10,3,Thin Ice,episode,2017-04-29,5.61,84,44
+revived,10,4,Knock Knock,episode,2017-05-06,5.73,83,44
+revived,10,5,Oxygen,episode,2017-05-13,5.27,83,45
+revived,10,6,Extremis,episode,2017-05-20,5.53,82,49
+revived,10,7,The Pyramid at the End of the World,episode,2017-05-27,5.79,82,46
+revived,10,8,The Lie of the Land,episode,2017-06-03,4.82,82,45
+revived,10,9,Empress of Mars,episode,2017-06-10,5.02,83,44
+revived,10,10,The Eaters of Light,episode,2017-06-17,4.73,81,42
+revived,10,11,World Enough and Time,episode,2017-06-24,5.00,85,46
+revived,10,12,The Doctor Falls,episode,2017-07-01,5.30,83,60
+revived,10,,Twice Upon a Time,special,2017-12-25,7.92,,60
+revived,11,1,The Woman Who Fell to Earth,episode,2018-10-07,10.96,83,64
+revived,11,2,The Ghost Monument,episode,2018-10-14,9.00,82,49
+revived,11,3,Rosa,episode,2018-10-21,8.41,83,50
+revived,11,4,Arachnids in the UK,episode,2018-10-28,8.22,83,49
+revived,11,5,The Tsuranga Conundrum,episode,2018-11-04,7.76,79,51
+revived,11,6,Demons of the Punjab,episode,2018-11-11,7.48,80,50
+revived,11,7,Kerblam!,episode,2018-11-18,"7,460,000",81,49
+revived,11,8,The Witchfinders,episode,2018-11-25,7.21,,47
+revived,11,9,It Takes You Away,episode,2018-12-02,6.42,80,49
+revived,11,10,The Battle of Ranskoor Av Kolos,episode,2018-12-09,6.65,79,50
+revived,11,,Resolution,special,2019-01-01,7.13,80,60
+revived,12,1,"Spyfall, Part 1",episode,2020-01-01,6.89,82,59
+revived,12,2,"Spyfall, Part 2",episode,2020-01-05,6.07,,60
+revived,12,3,Orphan 55,episode,2020-01-12,5.38,77,46
+revived,12,4,Nikola Tesla's Night of Terror,episode,2020-01-19,5.20,79,50
+revived,12,5,Fugitive of the Judoon,episode,2020-01-26,5.57,83,50
+revived,12,6,Praxeus,episode,2020-02-02,5.22,78,49
+revived,12,7,Can You Hear Me?,episode,2020-02-09,4.90,78,49
+revived,12,8,The Haunting of Villa Diodati,episode,2020-02-16,5.07,80,49
+revived,12,9,Ascension of the Cybermen,episode,2020-02-23,4.99,81,49
+revived,12,10,The Timeless Children,episode,2020-03-01,4.69,82,65
+revived,12,,Revolution of the Daleks,special,2021-01-01,6.36,79,71
+revived,13,1,The Halloween Apocalypse,episode,2021-10-31,"5,810,000",76,50
+revived,13,2,War of the Sontarans,episode,2021-11-07,5.13,77,59
+revived,13,3,"Once, Upon Time",episode,2021-11-14,4.7,75,49
+revived,13,4,Village of the Angels,episode,2021-11-21,4.57,,56
+revived,13,5,Survivors of the Flux,episode,2021-11-28,4.83,77,50
+revived,13,6,The Vanquishers,episode,2021-12-05,4.64,76,59
+revived,,1,Eve of the Daleks,special,2022-01-01,4.4,77,58
+revived,,2,Legend of the Sea Devils,special,2022-04-17,3.47,76,48
+revived,,3,The Power of the Doctor,special,2022-10-23,5.3,82,87
