@@ -7,7 +7,32 @@ def _placeholder(x):
     return type(x).__name__ == 'PlaceholderValue'
 
 
-class Exercise12(CodingProblem):
+class Exercise1(CodingProblem):
+    _vars = ['answer', 'response']
+    _hint = ("Go step by step and print each step: response['candidates'] is a list, "
+             "response['candidates'][0] its first item, then ['content'], then ['parts'], "
+             "then [0], then ['text'].")
+    _solution = CS("answer = response['candidates'][0]['content']['parts'][0]['text']")
+
+    def check(self, answer, response):
+        parts = response['candidates'][0]['content']['parts']
+        expected = parts[0].get('text')
+        assert isinstance(answer, str), ("answer should be the text of the answer (a string). You are not there yet: "
+                                         "go one step further along the path.")
+        assert answer in (expected, ''.join(p.get('text', '') for p in parts)), "That is not the text of the model's answer. Follow the path in the hint."
+
+
+class Exercise2(ThoughtExperiment):
+    _hint = ("The model does not look up an answer: it writes it word by word, each time choosing the next word "
+             "from a list of likely words. What does the temperature do to that choice?")
+    _solution = ("At temperature 1.0 the model samples each next word from its probability distribution, so every "
+                 "run can take a different path and produce a different list. A lower temperature makes the answers "
+                 "more similar, but not guaranteed identical (and Google advises against it for Gemini 3 models). "
+                 "For research this means: one answer is one sample. You need several runs, and you must report "
+                 "the model and the settings you used.")
+
+
+class Exercise3(CodingProblem):
     _vars = ['latest', 'probes']
     _hint = ("Three steps in one line: probes[probes['knows']] keeps the rows where knows is True; "
              ".groupby('label') makes one group per model; ['event_date'].max() takes the latest date.")
@@ -22,7 +47,7 @@ class Exercise12(CodingProblem):
             "Some dates are not right. Use .max() on the column event_date."
 
 
-class Exercise13(CodingProblem):
+class Exercise4(CodingProblem):
     _vars = ['forecasts']
     _hint = "Write (forecasts['probability'] - forecasts['outcome']) ** 2"
     _solution = CS("forecasts['brier'] = (forecasts['probability'] - forecasts['outcome']) ** 2")
@@ -35,66 +60,5 @@ class Exercise13(CodingProblem):
             "Not the Brier score yet: subtract the outcome from the probability, then square with ** 2."
 
 
-class Exercise14(CodingProblem):
-    _vars = ['fair', 'forecasts']
-    _hint = "Put the condition in square brackets: forecasts[~forecasts['leak']]"
-    _solution = CS("fair = forecasts[~forecasts['leak']]")
-
-    def check(self, fair, forecasts):
-        assert isinstance(fair, pd.DataFrame), "fair should be a table: select rows of forecasts with [ ... ]."
-        exp = forecasts[~forecasts['leak']]
-        if len(fair) == int(forecasts['leak'].sum()):
-            raise AssertionError("You kept the leaks: use ~ (not) or == False.")
-        assert len(fair) == len(exp) and not fair['leak'].any(), "fair should contain exactly the rows where leak is False."
-
-
-class Exercise15(CodingProblem):
-    _vars = ['by_break', 'fair']
-    _hint = "Replace ____ with the name of the column, in quotes: 'break'."
-    _solution = CS("by_break = fair.groupby(['label', 'break'])['brier'].mean().unstack()")
-
-    def check(self, by_break, fair):
-        exp = fair.groupby(['label', 'break'])['brier'].mean().unstack()
-        assert isinstance(by_break, pd.DataFrame), "Keep .unstack() at the end, so that you get a table."
-        assert set(by_break.index) == set(exp.index) and set(by_break.columns) == set(exp.columns), \
-            "Group by 'label' and 'break' (models in the rows, True/False in the columns)."
-        got = by_break.reindex(index=exp.index, columns=exp.columns)    # (.loc would read [False, True] as a mask)
-        assert np.allclose(got.values.astype(float), exp.values.astype(float), equal_nan=True), \
-            "The averages are not right: use the column brier and .mean()."
-
-
-class Exercise17(CodingProblem):
-    _vars = ['spread', 'fair']
-    _hint = "fair.groupby(['label', 'id'])['probability'].std()"
-    _solution = CS("spread = fair.groupby(['label', 'id'])['probability'].std()")
-
-    def check(self, spread, fair):
-        exp = fair.groupby(['label', 'id'])['probability'].std()
-        assert isinstance(spread, pd.Series), "spread should be one value per model and question: group by ['label', 'id']."
-        assert len(spread) == len(exp), "Group by both 'label' and 'id'."
-        assert np.allclose(spread.sort_index().values, exp.sort_index().values, equal_nan=True), \
-            "Use .std() on the column probability."
-
-
-class Exercise16(CodingProblem):
-    _vars = ['continuity_score', 'continuity_words']
-    _hint = "The condition is the same as in the lecture's hate_score_(): word in continuity_words"
-    _solution = CS("""    if word in continuity_words:""")
-
-    def check(self, continuity_score, continuity_words):
-        from nltk.tokenize import word_tokenize
-        def ref(text):
-            return sum(1 for w in word_tokenize(text) if w.lower() in continuity_words)
-        tests = ['Historically, such regimes remain in power; a collapse is unlikely.',
-                 'The strikes make a rapid change likely.', 'Usually usually USUALLY.', '']
-        for x in tests:
-            try:
-                got = continuity_score(x)
-            except Exception as e:
-                raise AssertionError(f"continuity_score() stops with an error: {e}")
-            assert got == ref(x), (f"continuity_score({x!r}) gives {got}, but it should be {ref(x)}. "
-                                   "Count a word when it is in continuity_words.")
-
-
-qvars = bind_exercises(globals(), [Exercise12, Exercise13, Exercise14, Exercise15, Exercise16, Exercise17], start=12)
+qvars = bind_exercises(globals(), [Exercise1, Exercise2, Exercise3, Exercise4], start=1)
 __all__ = list(qvars)
