@@ -11,6 +11,9 @@ Keys go into Colab's secrets (the key symbol on the left, switch on "Notebook ac
     OPENROUTER_API_KEY   openrouter.ai (paid), for names like 'openai/gpt-4.1-mini' or 'anthropic/claude-haiku-4.5'
     ANTHROPIC_API_KEY, OPENAI_API_KEY   if you use these providers directly ('claude-...', 'gpt-...')
 
+Choosing a model
+    openrouter_models(search)                        the models on OpenRouter, with their prices (no key needed)
+    has_key(model), key_name(model)                  is the key for this model there, and what is it called?
 Asking
     ask(prompt, model, temperature)                  one prompt, one answer
     collect(prompts, models, runs, file)             many answers, saved in a CSV file with model, settings and date
@@ -53,9 +56,33 @@ def get_key(name):
         return os.environ.get(name)
 
 
+def key_name(model=MODEL):
+    """The name of the secret that this model needs, e.g. 'OPENROUTER_API_KEY' for 'openai/gpt-4.1-mini'."""
+    return _provider(model)[1]
+
+
 def has_key(model=MODEL):
     """True if the key for this model is there."""
-    return bool(get_key(_provider(model)[1]))
+    return bool(get_key(key_name(model)))
+
+
+def openrouter_models(search=None):
+    """The models that OpenRouter offers now, with their prices in dollars per million tokens.
+    search: only models whose name contains this text, e.g. 'mistral' or 'gpt'. No key needed.
+    Use the 'model' column as the model name in ask() and collect()."""
+    r = requests.get('https://openrouter.ai/api/v1/models', timeout=60)
+    r.raise_for_status()
+    rows = []
+    for m in r.json()['data']:
+        price = m.get('pricing', {})
+        rows.append({'model': m['id'], 'name': m.get('name', ''),
+                     'price_in': float(price.get('prompt') or 0) * 1e6, 'price_out': float(price.get('completion') or 0) * 1e6,
+                     'context': m.get('context_length'),
+                     'added': datetime.date.fromtimestamp(m['created']).isoformat() if m.get('created') else ''})
+    df = pd.DataFrame(rows)
+    if search:
+        df = df[df['model'].str.contains(search, case=False) | df['name'].str.contains(search, case=False)]
+    return df.sort_values('model').reset_index(drop=True)
 
 
 class Stop(Exception):
