@@ -15,7 +15,7 @@ Choosing a model
     openrouter_models(search)                        the models on OpenRouter, with their prices (no key needed)
     has_key(model), key_name(model)                  is the key for this model there, and what is it called?
 Asking
-    ask(prompt, model, temperature)                  one prompt, one answer
+    ask(prompt, model, temperature)                  one prompt, one answer (also any API in OpenAI's format: base_url, key)
     collect(prompts, models, runs, file)             many answers, saved in a CSV file with model, settings and date
 Reading the answers
     parse_json(text)                                 the JSON in an answer
@@ -112,9 +112,9 @@ def _post(url, headers, body):
     return r.json()
 
 
-def _request(prompt, model, temperature, max_tokens, system, extra, key):
+def _request(prompt, model, temperature, max_tokens, system, extra, key, base_url=None):
     """One request in the provider's own format. Returns a dictionary with the text and the details."""
-    provider, _ = _provider(model)
+    provider = 'openai-style' if base_url else _provider(model)[0]
     if provider == 'gemini':
         config = {'temperature': temperature, **({'maxOutputTokens': max_tokens} if max_tokens else {}), **extra}
         body = {'contents': [{'parts': [{'text': prompt}]}], 'generationConfig': config}
@@ -142,7 +142,8 @@ def _request(prompt, model, temperature, max_tokens, system, extra, key):
                 'tokens_in': j['usage']['input_tokens'], 'tokens_out': j['usage']['output_tokens'],
                 'finish': j.get('stop_reason'), 'served_by': 'Anthropic', 'raw': j}
     # OpenAI, and the APIs that copy its format (OpenRouter and many others)
-    url = 'https://openrouter.ai/api/v1' if provider == 'openrouter' else 'https://api.openai.com/v1'
+    url = base_url or ('https://openrouter.ai/api/v1' if provider == 'openrouter' else 'https://api.openai.com/v1')
+    url = url.rstrip('/').removesuffix('/chat/completions')
     messages = ([{'role': 'system', 'content': system}] if system else []) + [{'role': 'user', 'content': prompt}]
     body = {'model': model, 'temperature': temperature, 'messages': messages, **extra}
     if max_tokens:
@@ -151,10 +152,11 @@ def _request(prompt, model, temperature, max_tokens, system, extra, key):
     choice = j['choices'][0]
     return {'text': choice['message'].get('content') or '',
             'tokens_in': j['usage']['prompt_tokens'], 'tokens_out': j['usage']['completion_tokens'],
-            'finish': choice.get('finish_reason'), 'served_by': j.get('provider', 'OpenAI'), 'raw': j}
+            'finish': choice.get('finish_reason'), 'served_by': j.get('provider') or url.split('/')[2], 'raw': j}
 
 
-def ask(prompt, model=MODEL, temperature=1.0, max_tokens=None, system=None, details=False, extra=None, tries=4):
+def ask(prompt, model=MODEL, temperature=1.0, max_tokens=None, system=None, details=False, extra=None, tries=4,
+        base_url=None, key=None):
     """Send one prompt to a model and return the text of its answer.
 
     model        'gemini-...' (Google, free key), 'provider/name' (OpenRouter), 'claude-...' or 'gpt-...'
@@ -164,14 +166,20 @@ def ask(prompt, model=MODEL, temperature=1.0, max_tokens=None, system=None, deta
     details      True: return a dictionary with text, tokens, finish reason, provider and the whole raw answer
     extra        settings added to the request, e.g. {'reasoning': {'effort': 'low'}} on OpenRouter
     tries        how often to try again when the server is busy (waiting 15, 30, 45 ... seconds)
+    base_url     for any other API in OpenAI's format, e.g. a provider's own API or Hugging Face's
+                 'https://router.huggingface.co/v1'. Then model is that provider's model name.
+    key          with base_url: the name of the secret that holds its key, e.g. 'HF_TOKEN'
     """
-    provider, key_name = _provider(model)
-    key = get_key(key_name)
-    if not key:
+    if base_url:
+        provider, key_name = 'openai-style', key or 'API_KEY'
+    else:
+        provider, key_name = _provider(model)
+    secret = get_key(key_name)
+    if not secret:
         raise Stop(f"No key: add {key_name} to Colab's secrets (key symbol on the left) and switch on Notebook access.")
     for attempt in range(tries):
         try:
-            res = _request(prompt, model, temperature, max_tokens, system, extra or {}, key)
+            res = _request(prompt, model, temperature, max_tokens, system, extra or {}, secret, base_url)
             break
         except Stop:
             raise
@@ -188,7 +196,7 @@ def ask(prompt, model=MODEL, temperature=1.0, max_tokens=None, system=None, deta
 
 
 def collect(prompts, models=MODEL, runs=1, temperature=1.0, file='llm_answers.csv', system=None,
-            max_tokens=None, extra=None, keep_raw=False, pause=1):
+            max_tokens=None, extra=None, keep_raw=False, pause=1, base_url=None, key=None):
     """Ask every model every prompt `runs` times and save each answer in a CSV file right away.
 
     prompts  one prompt, a list of prompts, or a dictionary {name: prompt}, e.g. {'en': '...', 'nl': '...'}
@@ -196,6 +204,7 @@ def collect(prompts, models=MODEL, runs=1, temperature=1.0, file='llm_answers.cs
     file     the CSV file. Answers already in it (same model, prompt, run and settings) are not asked again: run
              the cell again after an interruption and it goes on where it stopped. New answers are added to the file.
     keep_raw True: also save the whole raw answer of the API (as JSON text) in the column 'raw'
+    base_url, key   for another API in OpenAI's format: see ask()
 
     Every row says when it was asked, which model with which settings, and how many tokens it used:
     report these in your project. Returns the answers to this call (from the file) as a DataFrame.
@@ -225,7 +234,7 @@ def collect(prompts, models=MODEL, runs=1, temperature=1.0, file='llm_answers.cs
             continue
         try:
             res = ask(prompts[pid], model=m, temperature=temperature, max_tokens=max_tokens, system=system,
-                      details=True, extra=extra)
+                      details=True, extra=extra, base_url=base_url, key=key)
         except Stop as e:
             print(f'{m}: STOPPED - {e}\n  Check the model name and the key; the other models go on.')
             stopped.add(m)
@@ -272,7 +281,7 @@ def parse_json(text):
     return None
 
 
-BCE = r'(BCE|B\.?\s?C\.?|v\.\s?Chr\.?|voor Christus|公元前|紀元前|前(?=\s*\d)|기원전)'
+BCE = r'(BCE|B\.?\s?C\.?|v\.\s?Chr\.?|voor Christus|公元前|紀元前|前(?=\s*\d)|기원전|ق\.\s?م|قبل الميلاد)'
 
 
 def parse_dates(text):
@@ -296,7 +305,7 @@ def parse_dates(text):
             if not m:
                 continue
             left, event = m.group(1), m.group(2)
-        if re.search(r'century|eeuw|世纪|世紀', left, re.I):  # "3rd century BCE": no single year
+        if re.search(r'century|eeuw|世纪|世紀|القرن', left, re.I):  # "3rd century BCE": no single year
             continue
         left = re.sub(r'^\d{1,2}[.)]\s+(?=.*\d)', '', left.strip())   # a list number like "3. 1492"
         left = left.replace(',', '')
