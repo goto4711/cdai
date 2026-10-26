@@ -1,7 +1,8 @@
 # Cultural Data Analysis: Python libraries for all course notebooks
 # Install in two steps (learntools must come second):
 #   pip install -r requirements.txt
-#   pip install --no-build-isolation git+https://github.com/Kaggle/learntools.git
+#   pip install git+https://github.com/goto4711/learntools.git
+# (learntools comes from our fork of Kaggle/learntools, which installs with current pip and uv)
 # Tested with Python 3.12 (the version Google Colab uses).
 
 # Notebooks
