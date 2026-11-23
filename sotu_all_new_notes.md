@@ -1,9 +1,10 @@
-# sotu_all_clean.csv
+# sotu_all_new.csv
 
-The State of the Union collection, 1790 to 2026: 240 speeches, one per row. It is a cleaned and extended
-version of `sotu_all_new.csv`, which stays as it is because the course notebooks use it.
+The State of the Union collection, 1790 to 2026: 240 speeches, one per row. Since 23 November 2026 this is a
+cleaned and extended version of the earlier file, which is kept as `sotu_all_original.csv` (236 speeches,
+1790 to 2022, with the problems listed below; good material for a data critique).
 
-Columns: `rownames`, `speechtext`, `year`, `date` (as in `sotu_all_new.csv`), plus
+Columns: `rownames`, `speechtext`, `year` and `date` as before, plus
 `president`, `delivery` (spoken or written) and `type`.
 
 ## What changed
