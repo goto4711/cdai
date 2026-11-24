@@ -1,6 +1,5 @@
 from matplotlib import pyplot
 from math import cos, sin, atan, pi
-from palettable.tableau import Tableau_10
 from time import localtime, strftime
 import numpy as np
 
@@ -15,6 +14,14 @@ import urllib.parse
 
 # --- Configuration Defaults ---
 # These can be overridden by passing arguments to DrawNN
+# Course colours (Cultural Data Analysis, UvA), as in the neural-network tool on the course website
+COLOUR_POSITIVE = '#5B7BA8'   # blue-grey: positive weight
+COLOUR_NEGATIVE = '#BC0031'   # UvA crimson: negative weight
+COLOUR_NEURON_FILL = '#FBEEF1'  # light pink
+COLOUR_NEURON_EDGE = '#7A0020'  # dark red
+COLOUR_INK = '#1F1D21'          # text
+COLOUR_MUTED = '#555555'        # layer labels and neuron numbers
+
 DEFAULT_NEURON_RADIUS = 0.5
 DEFAULT_NEURON_SPACING_HORIZONTAL = 2.0
 DEFAULT_LAYER_SPACING_VERTICAL = 6.0
@@ -61,7 +68,10 @@ class Neuron():
         circle = pyplot.Circle(
             (self.x, self.y),
             radius=self.config['neuron_radius'],
-            fill=False
+            facecolor=COLOUR_NEURON_FILL,
+            edgecolor=COLOUR_NEURON_EDGE,
+            linewidth=1.2,
+            zorder=2
         )
         pyplot.gca().add_patch(circle)
         if neuron_id != -1:
@@ -70,6 +80,7 @@ class Neuron():
                 self.y - self.config['neuron_id_y_offset'] - self.config['neuron_radius'], # Adjust based on radius
                 str(neuron_id),
                 size=self.config['neuron_id_fontsize'],
+                color=COLOUR_MUTED,
                 ha='center',
                 va='top' # Align to top to be below neuron
             )
@@ -138,9 +149,9 @@ class Layer():
         y_adjustment = self.neuron_radius * cos(angle)
 
         # Determine line color based on weight sign
-        color = Tableau_10.mpl_colors[0]  # Default (e.g., negative or zero)
+        color = COLOUR_NEGATIVE  # negative or zero
         if weight > 0:
-            color = Tableau_10.mpl_colors[1] # Positive
+            color = COLOUR_POSITIVE
 
         # Determine linewidth based on weight magnitude
         abs_weight = abs(weight)
@@ -197,6 +208,7 @@ class Layer():
                             txt_x_pos, txt_y_pos,
                             self.config['weight_text_precision'].format(weight),
                             size=self.config['weight_text_fontsize'],
+                            color=COLOUR_INK,
                             ha='center', va='center', zorder=3 # Text above lines/neurons
                         )
                         text_obj.set_bbox(dict(facecolor='white', alpha=self.config['weight_text_bbox_alpha'], edgecolor='none', pad=0.1))
@@ -219,6 +231,7 @@ class Layer():
                             txt_x_pos, txt_y_pos,
                             self.config['weight_text_precision'].format(weight),
                             size=self.config['weight_text_fontsize'],
+                            color=COLOUR_INK,
                             ha='center', va='center', zorder=3
                         )
                         text_obj.set_bbox(dict(facecolor='white', alpha=self.config['weight_text_bbox_alpha'], edgecolor='none', pad=0.1))
@@ -242,7 +255,7 @@ class Layer():
         
         # Layer Text Label
         x_text = self.number_of_neurons_in_widest_layer * self.horizontal_distance_between_neurons + self.config['neuron_spacing_horizontal'] # Position to the right
-        pyplot.text(x_text, self.y, layer_type_label, fontsize=self.config['layer_label_fontsize'], va='center')
+        pyplot.text(x_text, self.y, layer_type_label, fontsize=self.config['layer_label_fontsize'], va='center', color=COLOUR_MUTED)
 
 
 class TextOverlappingHandler():
@@ -378,7 +391,7 @@ class NeuralNetwork():
         pyplot.axis('scaled')
         pyplot.axis('off')
         plot_title = self.config.get('title', 'Neural Network Architecture') # Allow custom title
-        pyplot.title(plot_title, fontsize=self.config['title_fontsize'])
+        pyplot.title(plot_title, fontsize=self.config['title_fontsize'], color=COLOUR_INK, fontweight='bold')
         
         #filename_prefix = self.config['output_filename_prefix']
         #timestamp = strftime("%Y%m%d_%H%M%S", localtime())
