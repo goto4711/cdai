@@ -31,6 +31,7 @@ Comparing
     brier(probability, outcome)                      score probability forecasts (lower is better)
 """
 import datetime
+import itertools
 import json
 import os
 import re
@@ -47,13 +48,38 @@ MODEL = 'gemini-3.5-flash-lite'   # the default: a small Gemini model with a fre
 # Keys and requests
 # ---------------------------------------------------------------------------------------------
 
+_KEY_SPELLING = {}   # the spelling under which a key was found, e.g. 'GEMINI_API_KEY' -> 'Gemini_API_Key'
+
+
+def _spellings(name):
+    """The name as given first, then with other capitals: GEMINI_API_KEY, Gemini_API_Key, gemini_api_key ..."""
+    out = [name]
+    for parts in itertools.product(*[(p.upper(), p.capitalize(), p.lower()) for p in name.split('_')]):
+        if '_'.join(parts) not in out:
+            out.append('_'.join(parts))
+    return out
+
+
 def get_key(name):
-    """Read a key from Colab's secrets, or else from an environment variable."""
+    """Read a key from Colab's secrets, or else from an environment variable.
+    Capitals do not matter: a secret called 'Gemini_API_Key' is found for 'GEMINI_API_KEY'."""
     try:
         from google.colab import userdata
-        return userdata.get(name)
     except Exception:
-        return os.environ.get(name)
+        userdata = None
+    names = [_KEY_SPELLING[name]] if name in _KEY_SPELLING else _spellings(name)
+    for n in names:
+        value = None
+        if userdata is not None:
+            try:
+                value = userdata.get(n)
+            except Exception:      # no secret with this name, or "Notebook access" is switched off
+                value = None
+        value = value or os.environ.get(n)
+        if value:
+            _KEY_SPELLING[name] = n
+            return value
+    return None
 
 
 def key_name(model=MODEL):
